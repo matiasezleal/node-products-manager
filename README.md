@@ -1,7 +1,7 @@
 # Rest Project + TypeScript
 
 Proyecto con TypeScript, Express y Rest.
-
+No estamos implementacion Repositorio
 ## Instalación
 
 1. Clonar .env.template a .env y configurar las variables de entorno
