@@ -1,6 +1,6 @@
 import { bcryptAdapter } from "../../config";
 import { UserModel } from "../../data";
-import { CustomError, RegisterUserDto, UserEntity } from "../../domain";
+import { CustomError, LoginUserDto, RegisterUserDto, UserEntity } from "../../domain";
 
 export class AuthService {
 
@@ -29,5 +29,21 @@ export class AuthService {
         } catch (error) {
             throw CustomError.internalServerError('Error creating user');
         }
+    }
+
+    async loginUser(loginDto: LoginUserDto) {
+        const {email, password} = loginDto;
+
+        const user = await UserModel.findOne({email});
+        /* I can use a generic message like 'Invalid credentials' */
+        if( !user ) throw CustomError.badRequest('User not found');
+
+        const isPasswordValid = await bcryptAdapter.compare(password, user.password);
+        /* I can use a generic message like 'Invalid credentials' */
+        if( !isPasswordValid ) throw CustomError.badRequest('Invalid password');
+
+        const {password: _, ...userData} = UserEntity.fromObject(user);
+
+        return {user: userData, token: 'JWT'};
     }
 }
