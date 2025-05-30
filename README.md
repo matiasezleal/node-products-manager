@@ -9,3 +9,7 @@ No estamos implementacion Repositorio
 3. En caso de necesitar base de datos, configurar el docker-compose.yml y ejecutar `docker-compose up -d` para levantar los servicios deseados.
 4. Ejecutar `npm run dev` para levantar el proyecto en modo desarrollo
 
+
+
+## TO IMPROVE
+Unificar el uso de objetos o clases en config

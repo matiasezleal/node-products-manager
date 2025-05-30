@@ -9,7 +9,7 @@ export class JwtAdapter {
                 expiresIn: duration
             };
 
-            jwt.sign(payload, envs.JWT_SECRET as Secret, options, (err, token) => {
+            jwt.sign(payload, envs.JWT_SECRET_SEED as Secret, options, (err, token) => {
                 if (err || !token) return null;
                 resolve(token);
             });
@@ -18,7 +18,7 @@ export class JwtAdapter {
 
     static validateToken<T extends JwtPayload>(token: string): T {
         try {
-            const decoded = jwt.verify(token, envs.JWT_SECRET as Secret);
+            const decoded = jwt.verify(token, envs.JWT_SECRET_SEED as Secret);
             return decoded as T;
         } catch (error) {
             throw new Error('Invalid token');
