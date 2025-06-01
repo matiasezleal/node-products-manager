@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { envs } from '../../config/envs';
 
 interface EmailOptions {
     to: string | string[];
@@ -28,7 +29,7 @@ export class EmailService {
 
     async sendEmail(options: EmailOptions) {
         const mailOptions = {
-            from: 'noreply@example.com',
+            from: envs.MAILER_EMAIL,
             to: options.to,
             subject: options.subject,
             html: options.htmlBody,

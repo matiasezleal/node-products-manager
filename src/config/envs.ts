@@ -17,6 +17,9 @@ export const envs = {
   MAILER_EMAIL: get('MAILER_EMAIL').required().asString(),
   MAILER_SECRET_KEY: get('MAILER_PASSWORD').required().asString(),  
 
+  // Frontend
+  FRONTEND_URL: get('FRONTEND_URL').required().asString(),
+
 }
 
 

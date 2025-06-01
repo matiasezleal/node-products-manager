@@ -16,12 +16,12 @@ export class JwtAdapter {
         });
     }
 
-    static validateToken<T extends JwtPayload>(token: string): T {
+    static validateToken<T extends JwtPayload>(token: string): T | null {
         try {
             const decoded = jwt.verify(token, envs.JWT_SECRET_SEED as Secret);
             return decoded as T;
         } catch (error) {
-            throw new Error('Invalid token');
+           return null;
         }
     }
 
