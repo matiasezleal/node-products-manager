@@ -16,7 +16,8 @@ export class EmailService {
     constructor(
         mailerService: string,
         mailerEmail: string,
-        senderEmailPassword: string
+        senderEmailPassword: string,
+        private readonly sendEmailActive: boolean
     ) {
         this.transporter = nodemailer.createTransport({
             service: mailerService,
@@ -28,6 +29,9 @@ export class EmailService {
     }
 
     async sendEmail(options: EmailOptions) {
+        // if not active, don't send email for testing
+        if( !this.sendEmailActive ) return true;
+        
         const mailOptions = {
             from: envs.MAILER_EMAIL,
             to: options.to,

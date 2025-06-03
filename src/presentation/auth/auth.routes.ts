@@ -11,12 +11,13 @@ export class AuthRoutes {
   static get routes(): Router {
 
     const router = Router();
-    
+
     const authService = new AuthService(
       new EmailService(
       envs.MAILER_SERVICE, 
       envs.MAILER_EMAIL, 
-      envs.MAILER_SECRET_KEY)
+      envs.MAILER_SECRET_KEY,
+      envs.SEND_EMAIL_ACTIVE)
     );
     const controller = new AuthController(authService);
     
