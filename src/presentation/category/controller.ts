@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { CategoryService } from "../services";
 import { CustomError } from "../../domain";
+import { CreateCategoryDto } from "../../domain/dtos/category/create-category.dto";
 
 export class CategoryController {
 
@@ -38,9 +39,16 @@ export class CategoryController {
     }
 
     createCategory = async (req: Request, res: Response) => {
+        const [errorMessage, categoryDto] = CreateCategoryDto.create(req.body);
+        if( errorMessage ) return res.status(400).json({
+            message: errorMessage
+        });
         try {
-            const category = await this.categoryService.createCategory(req.body);
-            res.json(category);
+            const categoryCreated = await this.categoryService.createCategory(categoryDto!);
+            res.status(201).json({
+                category: categoryCreated,
+                message: 'Category created successfully'
+            });
         } catch (error) {
             return this.handleError(res, error);
         }

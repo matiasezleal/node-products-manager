@@ -1,3 +1,4 @@
+import { CreateCategoryDto } from "../../domain/dtos/category/create-category.dto";
 import { CategoryEntity } from "../../domain/entities/category.entity";
 
 export class CategoryService {
@@ -14,11 +15,11 @@ export class CategoryService {
         return null;
     }
 
-    async createCategory(category: CategoryEntity): Promise<any> {
+    async createCategory(category: CreateCategoryDto):Promise<any> {
         return null;
     }
 
-    async updateCategory(id: string, category: CategoryEntity): Promise<any> {
+    async updateCategory(id: string, category: any): Promise<any> {
         return null;
     }
 

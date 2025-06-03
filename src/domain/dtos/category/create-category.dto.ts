@@ -3,15 +3,15 @@ export class CreateCategoryDto {
     public readonly name: string,
     public readonly description: string,
     public readonly userId: string,
+    public readonly available: boolean,
   ) {}
 
   static create(props: { [key: string]: any }): [string?, CreateCategoryDto?] {
-    const { name, description, userId } = props;
+    const { name, description, userId, available=false } = props;
 
     if (!name) return ['Name is required'];
-    if (!description) return ['Description is required'];
     if (!userId) return ['UserId is required'];
-
-    return [undefined, new CreateCategoryDto(name, description, userId)];
+    if (typeof available !== 'boolean') return ['Available must be a boolean or not provided'];
+    return [undefined, new CreateCategoryDto(name, description, userId, available)];
   }
 } 

@@ -25,7 +25,4 @@ const categorySchema = new mongoose.Schema({
   versionKey: false,
 });
 
-// Índices
-categorySchema.index({ name: 1 });
-
 export const CategoryModel = mongoose.model('Category', categorySchema);
