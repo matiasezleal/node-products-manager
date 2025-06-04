@@ -3,9 +3,9 @@ import { envs } from './envs';
 
 export class JwtAdapter {
 
-    static generateToken(payload: Object, duration: number = 2): Promise<string> {
+    static generateToken(payload: Object, duration: string | number = '2h'): Promise<string> {
         return new Promise((resolve, reject) => {
-            const options: SignOptions = {
+            const options: any = {
                 expiresIn: duration
             };
 

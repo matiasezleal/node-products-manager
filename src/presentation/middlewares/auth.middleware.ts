@@ -9,14 +9,17 @@ export class AuthMiddleware {
 
     static async validateJWT (req: Request, res: Response, next: NextFunction) {
         
-        const isBearer = req.headers.authorization?.toLowerCase().startsWith('bearer');
-        const tokenAuthorization  = isBearer ? req.headers.authorization?.split(' ')[1] : null;
+        const isBearer:boolean = req.headers.authorization?.toLowerCase().startsWith('bearer') ?? false;
+        const tokenAuthorization  = isBearer ? req.headers.authorization?.split(' ')[2] : null;
         if( !tokenAuthorization  ) return res.status(401).json({
             message: 'No Authorization token provided'
         });
 
+        console.log(tokenAuthorization);
+
         try {
             const payload = JwtAdapter.validateToken(tokenAuthorization);
+            console.log(payload);
             if( !payload ) return res.status(401).json({
                 message: 'Invalid token'
             });

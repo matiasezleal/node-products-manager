@@ -16,7 +16,7 @@ export class CategoryService {
     }
 
     async createCategory(category: CreateCategoryDto):Promise<any> {
-        return null;
+        return 'Test Category';
     }
 
     async updateCategory(id: string, category: any): Promise<any> {
