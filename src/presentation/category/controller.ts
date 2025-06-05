@@ -15,7 +15,6 @@ export class CategoryController {
                 message: error.message
             });
         }
-        console.log('paso por aca 4');
         return res.status(500).json({
             message: 'Internal server error'
         });
@@ -39,22 +38,21 @@ export class CategoryController {
     }
 
     createCategory = async (req: Request, res: Response) => {
+        console.log(req.body.user);
         const [errorMessage, categoryDto] = CreateCategoryDto.create(req.body);
         if( errorMessage ) return res.status(400).json({
             message: errorMessage
         });
-        console.log('paso por aca');
-        /*
-        this.categoryService.createCategory(categoryDto!).then((category) => {
-            console.log('paso por aca then');
+        
+        this.categoryService.createCategory(categoryDto!).then(category => {
             return res.status(201).json({
                 category: category,
                 message: 'Category created successfully'
             });
         }).catch((error) => {
-            console.log('paso por aca 3');
             return this.handleError(res, error);
-        });*/
+        });
+        /*
         try {
             const categoryCreated = await this.categoryService.createCategory(categoryDto!);
             return res.status(201).json({
@@ -67,7 +65,7 @@ export class CategoryController {
             return res.status(500).json({
                 message: 'Internal server error'
             });
-        }
+        }*/
     }
 
     updateCategory = async (req: Request, res: Response) => {
