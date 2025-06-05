@@ -31,7 +31,7 @@ export class CategoryController {
     getCategories = async (req: Request, res: Response) => {
         try {
             const categories = await this.categoryService.getCategories();
-            return res.json(categories);
+            return res.status(200).json(categories);
         } catch (error) {
             return this.handleError(res, error);
         }

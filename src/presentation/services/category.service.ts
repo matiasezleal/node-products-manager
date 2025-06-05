@@ -1,5 +1,6 @@
 import { CategoryModel } from "../../data";
 import { CustomError, UserEntity } from "../../domain";
+import { CategoryDto } from "../../domain/dtos/category/category.dto";
 import { CreateCategoryDto } from "../../domain/dtos/category/create-category.dto";
 import { CategoryEntity } from "../../domain/entities/category.entity";
 
@@ -9,8 +10,10 @@ export class CategoryService {
        
     ) {}
 
-    async getCategories(): Promise<any> {
-        return null;
+    async getCategories(): Promise<CategoryDto[]> {
+        const categories = await CategoryModel.find();
+        if(categories.length === 0) return [];
+        return categories.map(category => CategoryDto.fromObject(category));
     }
 
     async getCategoryById(id: string): Promise<any> {
