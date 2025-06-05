@@ -15,7 +15,7 @@ export class CategoryController {
                 message: error.message
             });
         }
-
+        console.log('paso por aca 4');
         return res.status(500).json({
             message: 'Internal server error'
         });
@@ -24,7 +24,7 @@ export class CategoryController {
     getCategoryById = async (req: Request, res: Response) => {  
         try {
             const category = await this.categoryService.getCategoryById(req.params.id);
-            res.json(category);
+            return res.json(category);
         } catch (error) {
             return this.handleError(res, error);
         }
@@ -32,7 +32,7 @@ export class CategoryController {
     getCategories = async (req: Request, res: Response) => {
         try {
             const categories = await this.categoryService.getCategories();
-            res.json(categories);
+            return res.json(categories);
         } catch (error) {
             return this.handleError(res, error);
         }
@@ -43,21 +43,37 @@ export class CategoryController {
         if( errorMessage ) return res.status(400).json({
             message: errorMessage
         });
+        console.log('paso por aca');
+        /*
+        this.categoryService.createCategory(categoryDto!).then((category) => {
+            console.log('paso por aca then');
+            return res.status(201).json({
+                category: category,
+                message: 'Category created successfully'
+            });
+        }).catch((error) => {
+            console.log('paso por aca 3');
+            return this.handleError(res, error);
+        });*/
         try {
             const categoryCreated = await this.categoryService.createCategory(categoryDto!);
-            res.status(201).json({
+            return res.status(201).json({
                 category: categoryCreated,
                 message: 'Category created successfully'
             });
         } catch (error) {
-            return this.handleError(res, error);
+            //return this.handleError(res, error);
+            console.log('pasa por error controller', error);
+            return res.status(500).json({
+                message: 'Internal server error'
+            });
         }
     }
 
     updateCategory = async (req: Request, res: Response) => {
         try {
             const category = await this.categoryService.updateCategory(req.params.id, req.body);
-            res.json(category);
+            return res.json(category);
         } catch (error) {
             return this.handleError(res, error);
         }
@@ -66,7 +82,7 @@ export class CategoryController {
     deleteCategory = async (req: Request, res: Response) => {
         try {
             const category = await this.categoryService.deleteCategory(req.params.id);
-            res.json(category);
+            return res.json(category);
         } catch (error) {
             return this.handleError(res, error);
         }

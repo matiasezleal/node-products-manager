@@ -15,11 +15,9 @@ export class AuthMiddleware {
             message: 'No Authorization token provided'
         });
 
-        console.log(tokenAuthorization);
 
         try {
             const payload = JwtAdapter.validateToken(tokenAuthorization);
-            console.log(payload);
             if( !payload ) return res.status(401).json({
                 message: 'Invalid token'
             });
@@ -37,6 +35,5 @@ export class AuthMiddleware {
                 message: 'Invalid token'
             });
         }
-        next();
     }
 }

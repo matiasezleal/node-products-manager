@@ -1,3 +1,5 @@
+import { CategoryModel } from "../../data";
+import { CustomError } from "../../domain";
 import { CreateCategoryDto } from "../../domain/dtos/category/create-category.dto";
 import { CategoryEntity } from "../../domain/entities/category.entity";
 
@@ -16,7 +18,18 @@ export class CategoryService {
     }
 
     async createCategory(category: CreateCategoryDto):Promise<any> {
-        return 'Test Category';
+        
+        const categoryAlreadyExists = await CategoryModel.findOne({ name: category.name });
+        if( categoryAlreadyExists ) throw CustomError.badRequest('Category already exists');
+        
+        try {
+            const newCategory = await CategoryModel.create(category);
+            const response = CategoryEntity.fromObject(newCategory);
+            return response;
+        } catch (error) {
+            console.log('error en createCategory', error);
+            throw error;
+        }
     }
 
     async updateCategory(id: string, category: any): Promise<any> {
