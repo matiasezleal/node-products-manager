@@ -16,8 +16,10 @@ export class CategoryService {
         return categories.map(category => CategoryDto.fromObject(category));
     }
 
-    async getCategoryById(id: string): Promise<any> {
-        return null;
+    async getCategoryById(id: string): Promise<CategoryDto> {
+        const category = await CategoryModel.findById(id);
+        if( !category ) throw CustomError.notFound('Category not found');
+        return CategoryDto.fromObject(category);
     }
 
     async createCategory(category: CreateCategoryDto):Promise<any> {
@@ -36,11 +38,30 @@ export class CategoryService {
         }
     }
 
-    async updateCategory(id: string, category: any): Promise<any> {
-        return null;
+    async updateCategory(id: string, category: CategoryDto): Promise<any> {
+        try {
+            const categoryToUpdate = await CategoryModel.findById(id);
+            if( !categoryToUpdate ) throw CustomError.notFound('Category not found');
+            categoryToUpdate.name = category.name;
+            categoryToUpdate.description = category.description;
+            categoryToUpdate.available = category.available;
+            await categoryToUpdate.save();
+            return CategoryDto.fromObject(categoryToUpdate);
+        } catch (error) {
+            console.log(error);
+            throw CustomError.internalServerError('Error updating category');
+        }
     }
 
     async deleteCategory(id: string): Promise<any> {
-        return null;
+        try {
+            const categoryToDelete = await CategoryModel.findById(id);
+            if( !categoryToDelete ) throw CustomError.notFound('Category not found');
+            await categoryToDelete.deleteOne();
+            return CategoryDto.fromObject(categoryToDelete);
+        } catch (error) {
+            console.log(error);
+            throw CustomError.internalServerError('Error deleting category');
+        }
     }
 }

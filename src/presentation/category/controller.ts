@@ -71,7 +71,10 @@ export class CategoryController {
     updateCategory = async (req: Request, res: Response) => {
         try {
             const category = await this.categoryService.updateCategory(req.params.id, req.body);
-            return res.json(category);
+            return res.status(200).json({
+                category: category,
+                message: 'Category updated successfully'
+            });
         } catch (error) {
             return this.handleError(res, error);
         }
@@ -80,7 +83,10 @@ export class CategoryController {
     deleteCategory = async (req: Request, res: Response) => {
         try {
             const category = await this.categoryService.deleteCategory(req.params.id);
-            return res.json(category);
+            return res.status(200).json({
+                category: category,
+                message: 'Category deleted successfully'
+            });
         } catch (error) {
             return this.handleError(res, error);
         }
