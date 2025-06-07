@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { CategoryService } from "../services";
-import { CustomError } from "../../domain";
+import { CustomError, PaginationDto } from "../../domain";
 import { CreateCategoryDto } from "../../domain/dtos/category/create-category.dto";
 
 export class CategoryController {
@@ -29,8 +29,11 @@ export class CategoryController {
         }
     }
     getCategories = async (req: Request, res: Response) => {
+        const { page=1, limit=10 } = req.query;
+
+
         try {
-            const categories = await this.categoryService.getCategories();
+            const categories = await this.categoryService.getCategories(page, limit);
             return res.status(200).json(categories);
         } catch (error) {
             return this.handleError(res, error);

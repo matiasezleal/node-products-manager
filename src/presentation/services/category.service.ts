@@ -1,5 +1,5 @@
 import { CategoryModel } from "../../data";
-import { CustomError, UserEntity } from "../../domain";
+import { CustomError, PaginationDto, UserEntity } from "../../domain";
 import { CategoryDto } from "../../domain/dtos/category/category.dto";
 import { CreateCategoryDto } from "../../domain/dtos/category/create-category.dto";
 import { CategoryEntity } from "../../domain/entities/category.entity";
@@ -10,10 +10,19 @@ export class CategoryService {
        
     ) {}
 
-    async getCategories(): Promise<CategoryDto[]> {
-        const categories = await CategoryModel.find();
+    async getCategories(page: any, limit: any): Promise<PaginationDto | []> {
+        const [errorMessage, paginationDto] = PaginationDto.create({ page, limit });
+        if( errorMessage ) throw CustomError.badRequest(errorMessage);
+
+        const total = await CategoryModel.countDocuments();
+        
+        const categories = await CategoryModel.find()
+            .skip((paginationDto!.page - 1) * paginationDto!.limit)
+            .limit(paginationDto!.limit);
         if(categories.length === 0) return [];
-        return categories.map(category => CategoryDto.fromObject(category));
+        paginationDto!.setData(categories.map(category => CategoryDto.fromObject(category)));
+        paginationDto!.setTotalPages(total);
+        return paginationDto!;
     }
 
     async getCategoryById(id: string): Promise<CategoryDto> {
