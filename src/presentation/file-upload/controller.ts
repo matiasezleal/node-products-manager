@@ -20,9 +20,21 @@ export class FileUploadController {
             message: 'Internal server error'
         });
     }
-    uploadFile = async (req: Request, res: Response) => {
 
-        const files = req.files;
+
+
+
+    /* UPLOAD FILE */
+    uploadFile = async (req: Request, res: Response) => {
+        const type = req.params.type;
+        
+
+        const validTypes = ['user', 'product', 'category'];
+        if( !validTypes.includes(type) ) {
+            return res.status(400).json({
+                message: 'Invalid type'
+            });
+        }
 
         if (!req.files || Object.keys(req.files).length === 0) {
             return res.status(400).json({
@@ -30,7 +42,7 @@ export class FileUploadController {
             });
         }
         const file = req.files.file as UploadedFile;
-        this.fileUploadService.uploadFile(file).then( (url) => {
+            this.fileUploadService.uploadFile(file, `uploads/${type}`).then( (url) => {
             return res.status(200).json({
                 message: 'File uploaded',
                 url

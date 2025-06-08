@@ -22,7 +22,11 @@ export class FileUploadService {
 
     
     /* UPLOAD FILE */
-    uploadFile = async (file: UploadedFile,folder: string = 'uploads', validExtensions: string[] = ['png', 'jpg', 'jpeg', 'gif']) => {
+    uploadFile = async (
+        file: UploadedFile,
+        folder: string = 'uploads', 
+        validExtensions: string[] = ['png', 'jpg', 'jpeg', 'gif'],
+    ) => {
         const { name, mimetype} = file;
         
         try {
