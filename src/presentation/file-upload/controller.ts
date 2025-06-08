@@ -36,26 +36,34 @@ export class FileUploadController {
             });
         }
 
-        if (!req.files || Object.keys(req.files).length === 0) {
-            return res.status(400).json({
-                message: 'No files were uploaded.'
-            });
-        }
-        const file = req.files.file as UploadedFile;
-            this.fileUploadService.uploadFile(file, `uploads/${type}`).then( (url) => {
+
+        const file = req.body.files.at(0) as UploadedFile;
+
+        this.fileUploadService.uploadFile(file, `uploads/${type}`).then( (url) => {
             return res.status(200).json({
                 message: 'File uploaded',
                 url
             });
         }).catch( (err) => {
-            this.handleError(err, res);
+            console.log(err);
+            this.handleError(res, err);
         });
         
     }
 
     uploadMultipleFiles = async (req: Request, res: Response) => {
-        return res.status(200).json({
-            message: 'Files uploaded'
+        const type = req.params.type;
+
+        const files = req.body.files;
+
+        this.fileUploadService.uploadMultipleFiles(files, type).then( (urls) => {
+            return res.status(200).json({
+                message: 'Files uploaded',
+                urls
+            });
+        }).catch( (err) => {
+            console.log(err);
+            this.handleError(res, err);
         });
     }
 }

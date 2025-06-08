@@ -15,7 +15,7 @@ export class FileUploadService {
      */
     private checkFolder(folder: string) {
         if( !fs.existsSync(folder) ) {
-            fs.mkdirSync(folder);
+            fs.mkdirSync(folder,{recursive:true});
         }
     }
 
@@ -65,6 +65,22 @@ export class FileUploadService {
     }
 
     uploadMultipleFiles = async (files:any, type: string) => {
-        return 'Files uploaded';
+        try {
+            const uploadPromises = files.map(async (file: UploadedFile) => {
+                return await this.uploadFile(file, `uploads/${type}`);
+            });
+
+            const results = await Promise.all(uploadPromises);
+
+            return {
+                uploadedFiles: results.map(result => ({
+                    fileName: result.fileName,
+                    path: result.path
+                }))
+            };
+
+        } catch (error) {
+            throw new Error(`Error uploading multiple files - ${error}`);
+        }
     }
 }
